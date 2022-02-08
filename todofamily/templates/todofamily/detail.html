@@ -1,0 +1,101 @@
+{% extends 'todofamily/base.html' %}
+{% load todofamily_tags %}
+
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block content %}
+{% show_menu page='show_todo' %}
+
+<hr>
+<div class="container border-start border-5 border-warning">
+    <div class="row mb-3">
+        <div class="col-1">
+            <div><img src="{{ data.is_from.userinfo.avatar.url }}" class="rounded-3" width="60" height="60"></div>
+            <div><p><small>{{ data.is_from }}</small></p></div>
+        </div>
+        <div class="col-11">
+            <blockquote class="blockquote">{{ data.content }}</blockquote>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-8">
+            {% if data.data_deadline %}
+            <p><small>- Выполнить {{ data.data_deadline }}</small></p>
+            {% endif %}
+            {% if data.photo %}
+            <p><small>- Прикрепленные <a href="{{ data.photo.url }}">файлы</a></small></p>
+            {% endif %}
+        </div>
+        <div class="col-4">
+            <h6 class="text-end">Исполнитель - {{ data.is_to }} {% if data.is_to.userinfo.avatar %}
+                <img src="{{ data.is_to.userinfo.avatar.url }}" class="rounded-3" width="60" height="60">{% endif %}
+            </h6>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-7"></div>
+        <div class="col-5">
+            <div class="btn-group">
+                {% if not data.is_negative and not data.is_ok %}
+                <a href="{% url 'success_todo' data.pk %}">
+                    <button type="button" class="btn btn-success">Выполнено</button>
+                </a>
+                {% endif %}
+                {% if user == data.is_from %}
+                <a href="{% url 'edit_todo' data.pk %}">
+                    <button type="button" class="btn btn-warning">Изменить</button>
+                </a>
+                <a href="{% url 'delete_todo' data.pk %}">
+                    <button type="button" class="btn btn-dark">Удалить</button>
+                </a>
+                {% endif %}
+                {% if not data.is_negative and not data.is_ok %}
+                <a href="{% url 'negative_todo' data.pk %}">
+                    <button type="button" class="btn btn-danger">Отказаться</button>
+                </a>
+                {% endif %}
+                {% if data.is_negative or data.is_ok %}
+                <a href="{% url 'return_todo' data.pk %}">
+                    <button type="button" class="btn btn-info">Вернуть в работу</button>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<hr>
+<p>Комментарии: </p>
+{% for comment in comments %}
+<div class="container  bg-light border-start border-5 border-{% cycle 'primary' 'secondary' 'success' 'danger' 'info' %}">
+    <div class="row py-2 m-1">
+        <div class="col-1">
+            <div><img src="{{ comment.user.userinfo.avatar.url }}" class="rounded-3" width="40" height="40"></div>
+            <div><p><small>{{ comment.user.first_name }}</small></p></div>
+        </div>
+        <div class="col-11">
+            <small>{{ comment.content }}</small>
+            <figcaption class="blockquote-footer pt-3"><small>Отправлено {{ comment.date|timesince }} назад</small>
+            </figcaption>
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+</div>
+{% endfor %}
+
+<form method="post">
+    {% csrf_token %}
+    <table>{{ form.as_p}}</table>
+
+    <button type="submit" class="btn btn-success mb-3">Отправить</button>
+</form>
+{% endblock %}
+

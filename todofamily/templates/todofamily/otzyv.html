@@ -1,0 +1,13 @@
+{% extends 'todofamily/base.html' %}
+
+{% block content %}
+    <form action="{% url 'otzyv' %}" method="post">
+        {% csrf_token %}
+        {% for i in form %}
+            <div>
+                <p><label>{{ i.label }}</label>: {{ i }}</p>
+            </div>
+        {% endfor %}
+        <button type="submit">Вперед</button>
+    </form>
+{% endblock %}

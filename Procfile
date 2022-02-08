@@ -1,0 +1,1 @@
+web: gunicorn spisok_del.wsgi

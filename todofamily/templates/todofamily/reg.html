@@ -1,0 +1,29 @@
+{% extends 'todofamily/base.html' %}
+{% load todofamily_tags %}
+
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+{% show_menu page='login' %}
+<div class="h2 pb-3">Заполните поля для регистрации</div>
+
+
+<form method="post" enctype="multipart/form-data">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+
+    {% for field in form %}
+    {{ field.errors }}
+    <div class="input-group flex-nowrap container pb-1">
+    <span class="input-group-text col-3" id="{{ field.id_for_ladel }}">{{ field.label }}</span>
+        <span>{{ field }}</span>
+
+    </div>
+{% endfor %}
+
+    <button type="submit" class="btn btn-success m-4">Регистрация</button>
+
+</form>
+{% endblock content %}

@@ -1,0 +1,92 @@
+{% extends 'todofamily/base.html' %}
+{% load todofamily_tags %}
+
+
+{% block title %}
+{{ title }}
+{% endblock title %}
+
+
+{% block content %}
+
+{% show_menu page='all_todo' %}
+
+
+{% if todo %}
+<div class="container list-group p-3">
+    {% for i in todo %}
+    <a href="{{ i.get_absolute_url }}" class="list-group-item list-group-item-action
+    {% if i.color %}list-group-item-{{ i.color }}{% endif %}">
+        <div class="row">
+            <div class="col-10">
+                <h5>{% if not i.is_scan %}
+                <span class="badge bg-danger">New</span>
+                {% endif %}{{ i.content |truncatewords_html:15 }}</h5>
+                <p><small class="text-muted"> От: <b>{{ i.is_from.first_name }}</b> Исполнитель: <b>{{ i.is_to.first_name }}</b>
+                {% if i.data_deadline %} Выполнить до {{ i.data_deadline }} {% endif %}</small></p>
+            </div>
+            <div class="col-2">
+                <img class="rounded-3" src='{{ i.is_from.userinfo.avatar.url }}' height="60" width="60" align="right">
+            </div>
+        </div>
+
+
+    </a>
+    {% endfor %}
+</div>
+{% if page_obj.has_other_pages %}
+
+<nav class="pt-3" aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1">Первая</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.number|add:-1 }}">Назад</a>
+        </li>
+        {% if page_obj.number|add:-2 > 0 %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.number|add:-2 }}">{{ page_obj.number|add:-2 }}</a>
+        </li>
+        {% endif %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.number|add:-1 }}</a>
+        </li>
+        {% endif %}
+        <li class="page-item active">
+            <span class="page-link">{{ page_obj.number }}</span>
+        </li>
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.number|add:1 }}</a>
+        </li>
+        {% if page_obj.number|add:2 <= paginator.num_pages %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.number|add:2 }}">{{ page_obj.number|add:2 }}</a>
+        </li>
+        {% endif %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.number|add:1 }}">Вперед</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ paginator.num_pages }}">Последняя</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+
+{% else %}
+<div class="text-center pt-5">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check-circle-fill "
+         viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+    </svg>
+</div>
+<p class="text-center h3">Задач в списке нет.</p>
+
+{% endif %}
+{% endblock content %}

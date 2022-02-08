@@ -1,0 +1,28 @@
+{% extends 'todofamily/base.html' %}
+{% load todofamily_tags %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+{% show_menu page='login' %}
+<div class="h2">Настройка профиля</div>
+
+
+<form method="post" enctype="multipart/form-data">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+
+    {% for field in form %}
+    {{ field.errors }}
+    <div class="input-group flex-nowrap container pb-1">
+    <span class="input-group-text col-3" id="{{ field.id_for_ladel }}">{{ field.label }}</span>
+        <span>{{ field }}</span>
+
+    </div>
+{% endfor %}
+
+    <button type="submit" class="btn btn-success m-4">Сохранить</button>
+    <a href="{% url 'PasswordEdit' %}"><button type="button" class="btn btn-danger">Сменить пароль</button></a>
+
+</form>
+{% endblock content %}

@@ -1,0 +1,33 @@
+{% extends 'todofamily/base.html' %}
+{% load todofamily_tags %}
+
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+{% show_menu page='auth' %}
+<div>
+<div class="display-6 pb-3">
+    Для начала работы авторизуйтесь
+</div>
+
+<form method="post">
+    {{ form.non_field_errors }}
+    {% csrf_token %}
+
+    {% for field in form %}
+    {{ form.field.errors }}
+    <div class="input-group flex-nowrap container pb-1">
+    <span class="input-group-text col-3" id="{{ field.id_for_ladel }}">{{ field.label }}</span>
+        <span>{{ field }}</span>
+
+    </div>
+{% endfor %}
+
+    <button type="submit" class="btn btn-success m-4">Войти</button>
+    <a href="{% url 'login' %}"><button type="button" class="btn btn-danger">Регистрация</button></a>
+
+</form>
+    </div>
+{% endblock content %}

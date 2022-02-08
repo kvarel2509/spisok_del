@@ -1,0 +1,10 @@
+    <div class="container pb-4 pt-3">
+    {% for i in menu %}
+        <a href="{% url i.url %}" class="{{ i.class }}" role="button">
+            {% if i.icon %}
+            {{ i.icon | safe }}
+            {% endif %}
+            <h6>{{ i.name }}</h6>
+        </a>
+    {% endfor %}
+    </div>

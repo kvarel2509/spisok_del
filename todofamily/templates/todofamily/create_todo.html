@@ -1,0 +1,14 @@
+{% extends 'todofamily/base.html' %}
+{% load todofamily_tags %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+{% show_menu page='create_todo' %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success btn-lg mb-4">Отправить</button>
+</form>
+{% endblock %}
