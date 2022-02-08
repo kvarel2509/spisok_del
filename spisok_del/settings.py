@@ -15,19 +15,18 @@ import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-STATIC_PRODUCTION_DIR = os.path.abspath(os.path.join(
-os.path.dirname(__file__), '..', '..', 'static_production'))
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(STATIC_PRODUCTION_DIR, "static")
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(STATIC_PRODUCTION_DIR, "media")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
-STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, "static"),
-]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 
 # Quick-start development settings - unsuitable for production
